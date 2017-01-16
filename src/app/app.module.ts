@@ -8,10 +8,12 @@ import { Page1 } from '../pages/page1/page1';
 import { Page2 } from '../pages/page2/page2';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBT8kacfD_SYp8Ei6TBcUEFlxnDK3GtYc0",
-  authDomain: "businesscontacts-94792.firebaseapp.com",
-  databaseURL: "https://businesscontacts-94792.firebaseio.com",
-  storageBucket: "businesscontacts-94792.appspot.com"
+  const firebaseConfig = {
+    apiKey: "YOUR_APP_KEY",
+    authDomain: "YOUR_APP_DOMAIN.firebaseapp.com",
+    databaseURL: "https://YOUR_APP_DOMAIN.firebaseio.com",
+    storageBucket: "YOUR_APP_DOMAIN.appspot.com"
+  };
 };
 
 firebase.initializeApp(firebaseConfig);

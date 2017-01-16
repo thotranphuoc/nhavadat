@@ -33,3 +33,5 @@ Step 5: import firebase into each file you want to call firebase:
   
 REMEMBER: you need to create an firebase account.
 If you have any problem with these code, please feel free to contact me @: thotranphuoc@outlook.com
+
+

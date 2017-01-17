@@ -6,7 +6,7 @@ Step 2: Update the "@ionic/app-scripts" to the lastest version:
   npm install @ionic/app-scripts@latest --save
   
 Step 3: add firebase libruary:
-  npm uninstall firebase --save
+  npm install firebase --save
   
 Step 4: bootstrap firebase in app.module.ts file:
   import * as firebase from 'firebase';

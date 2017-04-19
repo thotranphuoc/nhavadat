@@ -1,0 +1,48 @@
+
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>camera</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <!--<img id="camera-image-capture" />-->
+ <div *ngIf="base64Image">
+   <img src="{{base64Image}}">
+ </div>
+ <ion-grid>
+   <ion-row>
+     <ion-col><img *ngIf="base64Images[0]" src="{{base64Images[0]}}" alt=""></ion-col>
+     <ion-col><img *ngIf="base64Images[1]" src="{{base64Images[1]}}" alt=""></ion-col>
+   </ion-row>
+ </ion-grid>
+
+  <ion-fab bottom right>
+    <button ion-fab color="secondary" (click)="takePicture()"><ion-icon name="camera"></ion-icon></button>
+  </ion-fab>
+  <ion-fab bottom left>
+    <button ion-fab color="primary" (click)="takePictureFromGallery()"><ion-icon name="albums"></ion-icon></button>
+  </ion-fab>
+  <button id="btnUpload" ion-button block (click)="upload2Firebase()">Up Image to Firebase</button>
+  <!--<button id="btnUpload" ion-button block (click)="upload2Firebase()" [disabled]="!isbase64PicReady">Up to Firebase</button>-->
+  <button id="btnUpload" ion-button block (click)="uploadImages2Firebase()">Up Images to Firebase</button>
+
+  <img src="{{sampleBase64}}" alt="">
+
+  <button ion-button block (click)="loadPhotos()">Sync</button>
+  <img id="camera-image" />
+
+  <!--<hr>
+  {{MESSAGE_TO_DISPLAY}}
+  <hr>
+  {{downloadUrl}}-->
+  <div>
+    Downloaded URL:
+    <ion-item *ngFor="let item of downloadUrls">
+      {{item}}
+    </ion-item>
+  </div>
+</ion-content>

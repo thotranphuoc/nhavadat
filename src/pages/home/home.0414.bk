@@ -1,0 +1,168 @@
+import { Component, ViewChild } from '@angular/core';
+import { NavController, NavParams, Platform } from 'ionic-angular';
+
+import { DbService } from '../../services/db.service';
+import { AppService } from '../../services/app.service';
+import { GmapService } from '../../services/gmap.service';
+import { iPosition } from '../../interface/position.interface';
+import { iSoldItem } from '../../interface/sold-item.interface';
+
+@Component({
+  selector: 'page-home',
+  templateUrl: 'home.html'
+})
+export class HomePage {
+  maphome: any;
+  soldItemsWithKey: {key: string, data: iSoldItem}[] = [];
+  positionList: iPosition[]= [];
+  userCurrentPosition: iPosition = { lat: 0, lng: 0}
+  
+  @ViewChild('maphome') mapElement;
+  constructor(
+    private gmapService: GmapService,
+    private dbService: DbService,
+    private appService: AppService,
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private platform: Platform ) {
+
+    // this.getPostionList()
+    //   .then((positions) => {
+    //     console.log(positions);
+    //     return this.gmapService.getCurrentLocationReturnPromise();
+    //   })
+    //   .then((position: iPosition) => {
+    //     console.log(position, position.lat, position.lng);
+    //     this.gmapService.initMapForElementIdWithCenterZoomType('maphome', position, 15);
+
+    //   })
+    //   .catch(err=>{
+    //     console.log(err);
+    //   })
+
+    // this.gmapService.getCurrentLocationReturnPromise().then((position) => {
+    //   console.log(position);
+    //   return this.gmapService.initMapForElementIdWithCenterZoomType('maphome', position, 15);
+    // }).then(() => {
+    //   // setTimeout(()=>{
+    //   //   this.loadMarker();
+    //   // },5000);
+    //   this.loadMarkers();
+    // })
+
+    platform.ready().then(()=>{
+      // this.initializeMap({lat: 0, lng: 0  });
+    })
+    this.soldItemsWithKey = this.dbService.getSoldItems();
+    
+
+  }
+
+  ionViewWillEnter(){
+    this.dbService.getItemsFromFirebaseReturnArrayWithKey_Data('soldItems').then((data)=>{
+      console.log(data);
+    })
+  }
+
+  ionViewDidLoad() {
+
+    console.log('ionViewDidLoad HomePage');
+    this.getCurrentPosition()
+    .then((currentPos: iPosition)=>{
+      // this.map = new google.maps.Map(document.getElementById('maphome'));
+      this.userCurrentPosition = currentPos;
+      console.log(this.userCurrentPosition);
+      return this.initializeMap(currentPos);
+      // this.initMap(this.map);
+    })
+    .then(()=>{
+      //do something after map initialized;
+      console.log(this.positionList);
+      // this.loadMarkers('maphome');
+    })
+    
+  }
+
+  getPositionList() {
+    return new Promise((resolve, reject) => {
+      let items = []
+      this.dbService.getItemsFromFirebaseReturnArrayWithKey_Data('soldItems')
+        .then((soldItems: any[]) => {
+          console.log(soldItems);
+          this.dbService.setSoldItems(soldItems);
+          soldItems.forEach((position: { key: string, data: iSoldItem }) => {
+            let item = {
+              key: position.key,
+              lat: position.data.POSITION.lat,
+              lng: position.data.POSITION.lng
+            }
+            console.log(item);
+            items.push(item);
+          });
+          this.positionList = items;
+          console.log(this.dbService.getSoldItems());
+          resolve(this.positionList);
+          // resolve(positions);
+        }, err => {
+          reject(err);
+        })
+        .catch(err => {
+          console.log(err)
+          reject(err);
+        })
+    })
+  }
+
+  // initMap(map:any){
+  //   return this.gmapService.initMapForElementIdWithCenterZoomType(map, this.userCurrentPosition, 15).then(()=>{
+  //     this.loadMarkers(map);
+  //   })
+  // }
+
+  initializeMap(position: iPosition){
+    // let latLng = new google.maps.LatLng(-34.99434, 138.5434);
+    let mapOptions = {
+      center: position,
+      zoom: 15,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+
+    // display map
+    this.maphome  = new google.maps.Map(this.mapElement.nativeElement,mapOptions);
+  }
+
+  getCurrentPosition(){
+    return this.gmapService.getCurrentLocationReturnPromise();
+  }
+
+  getMarkers() {
+    this.positionList = this.dbService.getUpdatedItemList();
+  }
+
+  loadMarkers(){
+    
+    console.log(this.positionList);
+    this.soldItemsWithKey = this.dbService.getSoldItems();
+    this.soldItemsWithKey.forEach(soldItemWithKey =>{
+      console.log(soldItemWithKey);
+      // this.gmapService.addMarkerToMap(this.map, { lat: positionItem.lat, lng: positionItem.lng});
+      this.gmapService.addMarkerToMapWithID(this.maphome, soldItemWithKey).then(()=>{
+        this.appService.startLoadingCtrl();
+      });
+    })
+    // this.appService.stopLoadingCtrl();
+  }
+
+}
+
+// 1. get List of Item from Db
+// 2. load the map
+// 3. load marker with list from 1
+// 
+
+
+/*
+
+
+
+ */

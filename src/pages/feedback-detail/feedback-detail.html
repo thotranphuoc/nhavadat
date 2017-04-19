@@ -1,0 +1,63 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>DETAIL of FEEDBACK</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <div *ngIf="hasUserAvatar">
+    <ion-item>
+      <ion-avatar>
+        <img src="{{profile.AVATAR_URL}}" alt="" class="img">
+      </ion-avatar>
+    </ion-item>
+    <ion-item>
+      {{profile.NAME | uppercase}}
+    </ion-item>
+  </div>
+
+  <ion-item>
+    <ion-toggle checked="feedback.SOLDOUT" color="danger"></ion-toggle>
+    <ion-label>
+      Sold out
+    </ion-label>
+    <ion-icon name='ios-cart-outline' item-left></ion-icon>
+  </ion-item>
+  <ion-item>
+    <ion-toggle checked="feedback.WRONGPIC" color="danger"></ion-toggle>
+    <ion-label>
+      Wrong pictures
+    </ion-label>
+    <ion-icon name='ios-camera-outline' item-left></ion-icon>
+  </ion-item>
+  <ion-item>
+    <ion-toggle checked="feedback.WRONGPHONE" color="danger"></ion-toggle>
+    <ion-label>
+      Wrong phone number
+    </ion-label>
+    <ion-icon name='ios-call-outline' item-left></ion-icon>
+  </ion-item>
+  <ion-item>
+    <ion-toggle checked="feedback.WRONGLOCATION" color="danger"></ion-toggle>
+    <ion-label>
+      Wrong location
+    </ion-label>
+    <ion-icon name='ios-compass-outline' item-left></ion-icon>
+  </ion-item>
+  <ion-item>
+    <ion-toggle checked="feedback.WRONGPRICE" color="danger"></ion-toggle>
+    <ion-label>
+      Wrong price
+    </ion-label>
+    <ion-icon name='logo-usd' item-left></ion-icon>
+  </ion-item>
+  <ion-item>
+    <ion-textarea value="{{feedback.COMMENTS}}"></ion-textarea>
+    <!--<input [(ngModel)]="feedback.COMMENTS" name="COMMENTS" type="textarea" placeholder="Your comments">-->
+  </ion-item>
+
+</ion-content>

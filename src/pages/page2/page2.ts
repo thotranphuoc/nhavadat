@@ -2,27 +2,52 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import * as firebase from 'firebase';
 
+import { DbService } from '../../services/db.service';
+
 @Component({
   selector: 'page-page2',
   templateUrl: 'page2.html'
 })
 export class Page2 {
+  person: {name?: string, age?: number, height?: number} = {};
   items = [];  // very important, items=[] works. items: Any[], Array<any> not work
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.getAllItemsOnce('items');
-    // this.updateItem(2, "Item 2", "Day la item a 2");
-    this.onItemChanged(2);
-    this.onAnyItemChanged('items');
-    this.removeAllItems('itemsk');
-    this.removeItem('items', 5);
-    this.onItemsChanged('items');
-    this.sortGetTheLastAddedItem('items');
-    this.queryCondition('businesses', 3, true);
-    this.syncDownFromServer('items');
-    this.insertNewItem('CanTho', "Ninh Kieu", "items");
+  constructor(
+              public navCtrl: NavController, 
+              public navParams: NavParams, 
+              private dbService: DbService) {
+
+                this.person.age = 35;
+                this.person.name = 'Tran Phuoc Tho';
+                this.person.height = 167;
+    // this.getAllItemsOnce('items');
+    // // this.updateItem(2, "Item 2", "Day la item a 2");
+    // this.onItemChanged(2);
+    // this.onAnyItemChanged('items');
+    // this.removeAllItems('itemsk');
+    // this.removeItem('items', 5);
+    // this.onItemsChanged('items');
+    // this.sortGetTheLastAddedItem('items');
+    // this.queryCondition('businesses', 3, true);
+    // this.syncDownFromServer('items');
+    // this.insertNewItem('CanTho', "Ninh Kieu", "items");
+
+    // this.dbService.insertOneNewItem({name: 'name', body: 'body'}, 'items');
 
 
   }
+
+  onSubmit(form) {
+    console.log(this.person);
+    // reset the form
+    // this.person.age = null;
+    // this.person.name =null;
+    // this.person.height = null;
+    // this.dbService.addItem(this.person, 'items');
+
+    this.person = { name :null, age :null, height: null};
+
+  }
+
 
   // update if item existing, create if item not exist
   updateItem(key, name, body) {
